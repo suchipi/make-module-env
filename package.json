@@ -4,6 +4,6 @@
   "description": "Create exports, module, require, __filename, and __dirname variables for any path",
   "main": "src/index.js",
   "types": "src/index.d.ts",
-  "author": "Suchipi <me@suchipi.com>",
+  "author": "Lily Skye <me@suchipi.com>",
   "license": "MIT"
 }
