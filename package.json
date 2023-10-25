@@ -5,5 +5,9 @@
   "main": "src/index.js",
   "types": "src/index.d.ts",
   "author": "Lily Skye <me@suchipi.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/suchipi/make-module-env.git"
+  }
 }
