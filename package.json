@@ -9,5 +9,11 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/suchipi/make-module-env.git"
+  },
+  "devDependencies": {
+    "vitest": "^0.34.6"
+  },
+  "scripts": {
+    "test": "vitest"
   }
 }
