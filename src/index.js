@@ -13,7 +13,13 @@ module.exports = function makeModuleEnv(filename) {
   mod.filename = filename;
   mod.paths = Module._nodeModulePaths(filename);
 
-  const req = makeRequireFunction(mod);
+  let req;
+  if (typeof Module.createRequire === "function") {
+    req = Module.createRequire(filename);
+  } else {
+    req = makeRequireFunction(mod);
+  }
+
   req.main = mod;
 
   const exps = {};
