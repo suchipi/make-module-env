@@ -2,7 +2,7 @@ const Module = require("module");
 const path = require("path");
 const makeRequireFunction = require("./makeRequireFunction");
 
-module.exports = function makeModuleEnv(filename) {
+function makeModuleEnv(filename) {
   if (!path.isAbsolute(filename)) {
     throw new Error("makeModuleEnv requires an absolute path");
   }
@@ -32,4 +32,10 @@ module.exports = function makeModuleEnv(filename) {
     __filename: filename,
     __dirname: dirname,
   };
-};
+}
+
+makeModuleEnv.__esModule = true;
+makeModuleEnv.makeModuleEnv = makeModuleEnv;
+makeModuleEnv.default = makeModuleEnv;
+
+module.exports = makeModuleEnv;

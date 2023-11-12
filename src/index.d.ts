@@ -8,4 +8,12 @@ export type ModuleEnv = {
   __dirname: string;
 };
 
-export function makeModuleEnv(filename: string): ModuleEnv;
+declare function makeModuleEnv(filename: string): ModuleEnv;
+
+declare const exports: typeof makeModuleEnv & {
+  makeModuleEnv: makeModuleEnv;
+  default: makeModuleEnv;
+};
+
+export { exports as makeModuleEnv };
+export default exports;
