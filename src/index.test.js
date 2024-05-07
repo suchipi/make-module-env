@@ -1,33 +1,39 @@
 import { test, expect } from "vitest";
+import { Path } from "nice-path";
 import makeModuleEnv from "./index";
+
+const rootDir = new Path(__dirname, "..").normalize();
 
 test("make-module-env", () => {
   const env = makeModuleEnv(__filename);
 
-  // too lazy to clean the machine-specific paths out of this one... yolo
-  expect(env).toMatchInlineSnapshot(`
+  const cleaned = JSON.parse(
+    JSON.stringify(env, null, 2).replaceAll(rootDir.toString(), "<rootDir>")
+  );
+
+  cleaned.module.paths = cleaned.module.paths
+    .filter((somePath) => somePath.startsWith("<rootDir>"))
+    .concat("...and some others");
+
+  expect(cleaned).toMatchInlineSnapshot(`
     {
-      "__dirname": "/home/suchipi/Code/make-module-env/src",
-      "__filename": "/home/suchipi/Code/make-module-env/src/index.test.js",
+      "__dirname": "<rootDir>/src",
+      "__filename": "<rootDir>/src/index.test.js",
       "exports": {},
-      "module": Module {
+      "module": {
         "children": [],
         "exports": {},
-        "filename": "/home/suchipi/Code/make-module-env/src/index.test.js",
+        "filename": "<rootDir>/src/index.test.js",
         "id": ".",
         "loaded": false,
         "path": ".",
         "paths": [
-          "/home/suchipi/Code/make-module-env/src/index.test.js/node_modules",
-          "/home/suchipi/Code/make-module-env/src/node_modules",
-          "/home/suchipi/Code/make-module-env/node_modules",
-          "/home/suchipi/Code/node_modules",
-          "/home/suchipi/node_modules",
-          "/home/node_modules",
-          "/node_modules",
+          "<rootDir>/src/index.test.js/node_modules",
+          "<rootDir>/src/node_modules",
+          "<rootDir>/node_modules",
+          "...and some others",
         ],
       },
-      "require": [Function],
     }
   `);
 

@@ -11,6 +11,7 @@
     "url": "git+https://github.com/suchipi/make-module-env.git"
   },
   "devDependencies": {
+    "nice-path": "^2.0.0",
     "vitest": "^0.34.6"
   },
   "scripts": {
