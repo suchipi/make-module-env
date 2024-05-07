@@ -11,8 +11,8 @@ export type ModuleEnv = {
 declare function makeModuleEnv(filename: string): ModuleEnv;
 
 declare const exports: typeof makeModuleEnv & {
-  makeModuleEnv: makeModuleEnv;
-  default: makeModuleEnv;
+  makeModuleEnv: typeof makeModuleEnv;
+  default: typeof makeModuleEnv;
 };
 
 export { exports as makeModuleEnv };
