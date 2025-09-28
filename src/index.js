@@ -21,6 +21,8 @@ function makeModuleEnv(filename) {
 
   let req;
   if (typeof Module.createRequire === "function") {
+    // Module.createRequire complains about absolute path stuff when using eg.
+    // win32 path on posix platform, so we use our version as a fallback
     try {
       req = Module.createRequire(filename);
     } catch (err) {
