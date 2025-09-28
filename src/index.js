@@ -1,13 +1,19 @@
 const Module = require("module");
-const path = require("path");
+const pathPosix = require("path/posix");
+const pathWin32 = require("path/win32");
 const makeRequireFunction = require("./makeRequireFunction");
 
 function makeModuleEnv(filename) {
-  if (!path.isAbsolute(filename)) {
+  let pathModuleToUseForDirname;
+  if (pathPosix.isAbsolute(filename)) {
+    pathModuleToUseForDirname = pathPosix;
+  } else if (pathWin32.isAbsolute(filename)) {
+    pathModuleToUseForDirname = pathWin32;
+  } else {
     throw new Error("makeModuleEnv requires an absolute path");
   }
 
-  const dirname = path.dirname(filename);
+  const dirname = pathModuleToUseForDirname.dirname(filename);
 
   const mod = new Module(".", null);
   mod.filename = filename;
@@ -15,7 +21,11 @@ function makeModuleEnv(filename) {
 
   let req;
   if (typeof Module.createRequire === "function") {
-    req = Module.createRequire(filename);
+    try {
+      req = Module.createRequire(filename);
+    } catch (err) {
+      req = makeRequireFunction(mod);
+    }
   } else {
     req = makeRequireFunction(mod);
   }

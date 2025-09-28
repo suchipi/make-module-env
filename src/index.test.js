@@ -40,3 +40,41 @@ test("make-module-env", () => {
   const makeRequireFunction = env.require("./makeRequireFunction");
   expect(typeof makeRequireFunction).toBe("function");
 });
+
+test("with windows-style paths", () => {
+  const env = makeModuleEnv("C:\\Users\\suchipi\\blah");
+
+  const cleaned = JSON.parse(
+    JSON.stringify(env, null, 2).replaceAll(rootDir.toString(), "<rootDir>")
+  );
+
+  cleaned.module.paths = cleaned.module.paths
+    .filter((somePath) => somePath.startsWith("<rootDir>"))
+    .concat("...and some others");
+
+  expect(cleaned).toMatchInlineSnapshot(`
+    {
+      "__dirname": "C:\\Users\\suchipi",
+      "__filename": "C:\\Users\\suchipi\\blah",
+      "exports": {},
+      "module": {
+        "children": [],
+        "exports": {},
+        "filename": "C:\\Users\\suchipi\\blah",
+        "id": ".",
+        "loaded": false,
+        "path": ".",
+        "paths": [
+          "<rootDir>/C:\\Users\\suchipi\\blah/node_modules",
+          "<rootDir>/node_modules",
+          "...and some others",
+        ],
+      },
+    }
+  `);
+
+  // No easy way to test this part without actually being on windows...
+
+  // const makeRequireFunction = env.require("./makeRequireFunction");
+  // expect(typeof makeRequireFunction).toBe("function");
+});
